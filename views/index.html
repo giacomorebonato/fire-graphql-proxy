@@ -1,0 +1,112 @@
+<html>
+  <head>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.css">
+    <script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
+    <script src="https://unpkg.com/vuefire/dist/vuefire.js"></script>
+  </head>
+  <body>
+    <div class="ui container">
+      <h1>Fire-GraphQL</h1>
+
+      <div class="ui grid" id="app">
+        <div class="row">
+          <div class="eight wide column">
+            <h3>Create category</h3>
+            <form class="ui form" v-on:submit.stop.prevent="submitCategory">
+              <div class="field">
+                <label>Category name</label>
+                <input type="text" v-model="category" required />
+              </div>
+              <div class="field">
+                <label>Parent Category</label>
+                <select class="ui fluid dropdown" v-model="parentCategoryId" required>
+                  <option :value="null">Select</option>
+                  <option v-for="option in categories" v-bind:value="option['.key']">
+                    {{ option.name }}
+                  </option>
+                </select>
+              </div>
+              <button class="ui button">Submit</button>
+            </form>
+          </div>
+          <div class="eight wide column">
+            <h3>Create task</h3>
+            <form class="ui form" v-on:submit.stop.prevent="submitTask">
+              <div class="field">
+                <label>Task name</label>
+                <input type="text" v-model="task" required />
+              </div>
+              <div class="field">
+                <label>Category</label>
+                <select class="ui fluid dropdown" v-model="taskCategory" required>
+                  <option :value="null">Select</option>
+                  <option v-for="option in categories" v-bind:value="option['.key']">
+                    {{ option.name }}
+                  </option>
+                </select>
+              </div>
+              <button class="ui button">Submit</button>
+            </form>
+          </div>
+        </div>
+        <div class="row">
+          <table class="ui celled table">
+            <thead>
+              <tr>
+                <th>Task</th>
+                <th>Category UID</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in tasks">
+                <td>{{ item.name }}</td>
+                <td>{{ categories.filter((c) => (c['.key'] === item.category_uid))[0].name }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <script>
+      const config = {
+        apiKey: "AIzaSyCOrWLcvHXXtG4mdExRtwRNAQLoUSpyt6E",
+        authDomain: "fire-graphql.firebaseapp.com",
+        databaseURL: "https://fire-graphql.firebaseio.com",
+        storageBucket: "fire-graphql.appspot.com",
+        messagingSenderId: "758411964744"
+      };
+      firebase.initializeApp(config)
+      Vue.use(VueFire)
+
+      const dbRef = firebase.database()
+      const categoriesRef = dbRef.ref('categories')
+      const tasksRef = dbRef.ref('tasks')
+      const app = new Vue({
+        el: '#app',
+        data: {
+          parentCategoryId: '',
+          category: '',
+          task: '',
+          taskCategory: null
+        },
+        firebase: {
+          categories: categoriesRef,
+          tasks: tasksRef
+        },
+        methods: {
+          getParentCategory: function (parentCategory_uid) {
+            if (!parentCategory_uid) return ''
+            return this.categories.filter(c => c['.key'] === parentCategory_uid)[0].name
+          },
+          submitCategory: function () {
+            this.$firebaseRefs.categories.push({ name: this.category, parentCategory_uid: this.parentCategoryId })
+          },
+          submitTask: function () {
+            tasksRef.push({ name: this.task, category_uid: this.taskCategory })
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
