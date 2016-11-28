@@ -1,5 +1,4 @@
 import * as url from 'url';
-import axios = require('axios')
 import {
   GraphQLObjectType,
   GraphQLString,
