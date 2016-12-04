@@ -20,7 +20,7 @@
               </div>
               <div class="field">
                 <label>Parent Category</label>
-                <select class="ui fluid dropdown" v-model="parentCategoryId" required>
+                <select class="ui fluid dropdown" v-model="parentCategoryId">
                   <option :value="null">Select</option>
                   <option v-for="option in categories" v-bind:value="option['.key']">
                     {{ option.name }}

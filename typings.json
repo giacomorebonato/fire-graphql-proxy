@@ -8,7 +8,6 @@
     "graphql": "registry:npm/graphql#0.5.0+20160602041655"
   },
   "globalDependencies": {
-    "node": "registry:env/node#6.0.0+20161105011511",
-    "qs": "registry:dt/qs#6.2.0+20160707010053"
+    "node": "registry:env/node#6.0.0+20161105011511"
   }
 }
