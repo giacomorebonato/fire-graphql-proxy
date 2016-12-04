@@ -1,5 +1,6 @@
 # Fire-GraphQL  
-Fire-GraphQL is a GraphQL Proxy sample for Firebase.    
+Fire-GraphQL is a GraphQL Proxy sample for Firebase.  
+[Demo](https://github.com/giacomorebonato/fire-graphql-proxy)
 
 ## Why?  
 - GraphQL makes a difference for Mobile developers  
