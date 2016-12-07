@@ -1,10 +1,9 @@
-import firebase from '../../lib/firebase'
+import got = require('got')
 import snapshotToArray from '../../lib/snapshotToArray'
 
 function tasksResolver (root, args: any, req) {
-  return firebase.database().ref('tasks').once('value').then((snap) => {
-    return snapshotToArray(snap.val())
-  })
+  return got(process.env['FIREBASE_URL'] + 'tasks.json', { json: true })
+    .then(res => snapshotToArray(res.body))
 }
 
 module.exports = tasksResolver

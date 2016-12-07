@@ -1,4 +1,4 @@
-import firebase from '../../lib/firebase'
+import got = require('got')
 import snapshotToArray from '../../lib/snapshotToArray'
 
 function categoryResolver (root, args: any, req) {
@@ -10,12 +10,12 @@ function categoryResolver (root, args: any, req) {
     return null
   }
 
-  return firebase.database().ref(`categories/${categoryId}`).once('value').then((snap) => {
-    const data = snap.val()
-    data.uid = categoryId
+  return got(process.env['FIREBASE_URL'] + `categories/${categoryId}.json`, { json: true })
+    .then(res => {
+      res.body.uid = categoryId
 
-    return data
-  })
+      return res.body
+    })
 }
 
 export default categoryResolver
