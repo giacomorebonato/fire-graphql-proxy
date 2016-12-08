@@ -22,7 +22,7 @@
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
     "ts-node": "^1.7.0",
-    "typescript": "^2.0.10",
+    "typescript": "^2.1.4",
     "typings": "*"
   }
 }
